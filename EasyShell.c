@@ -20,14 +20,14 @@ char *divide(char *s, const char *delim, char **save_ptr) {
         return NULL;  
   
     /* Find the end of the token.  */  
-    token = s;  //保存当前的待分解串的指针
-    s = strpbrk(token, delim);  //在token中找分界符
+    token = s;  
+    s = strpbrk(token, delim);  
     if (s == NULL)  
         /* This token finishes the string.  */  
         *save_ptr = strchr(token, '\0');  
     else {  
         /* Terminate the token and make *SAVE_PTR point past it.  */  
-        *s = '\0';  //截断
+        *s = '\0';  
         *save_ptr = s + 1;  
     }  
   
@@ -36,14 +36,14 @@ char *divide(char *s, const char *delim, char **save_ptr) {
 
 int main() {
     int pid;
-    int rtn; /*子进程的返回数值*/
+    int rtn; /*return value*/
     int exec_errorno;
     char command[256];
     char *p;
 
 
     while (1) {
-        /* 从终端读取要执行的命令 */
+        /* read from terminal */
         printf("MyShell@Bock:");
         command[0] = '\0';
         p = fgets(command, 256, stdin);
@@ -79,7 +79,7 @@ int main() {
         } 
         else if (pid == 0) {
 
-            //考虑重定向;在字符串数组中找重定向标志
+            //deal with redirection
             int i = 0;
             int flag = 0;
             for (; arg[i] != NULL; ++i )
@@ -126,16 +126,15 @@ int main() {
                 dup2(in_fd, fileno(stdin));
             }
 
-            /* 子进程执行此命令 */
+            /* for subprocess */
             exec_errorno = execvp(arg[0], arg);
-            /* 如果exec函数返回，表明没有正常执行命令 */ 
-            /* 只有在这种情况下，才会执行下面的打印错误信息*/
+            /* error message*/
             perror(command);
 
             exit(exec_errorno);
         }
         else {
-            /* 父进程， 等待子进程结束，并打印子进程的返回值 */
+            /* for parent process */
             wait(&rtn);
             printf("\nValue returned from child process, rtn = %d\n", rtn);
             printf("WEXITSTATUS(rtn) = %d\n", WEXITSTATUS(rtn));
