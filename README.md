@@ -1,3 +1,3 @@
-# EasyShell
+# Easy-Shell
 
-An easy version of Linux shell considering the redirection.
+An easy implementation of Linux shell considering the redirection.
